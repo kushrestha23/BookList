@@ -24,3 +24,8 @@ def books(request):
             )
 
         return JsonResponse(model_to_dict(book), status=201)
+
+
+@csrf_exempt
+def index():
+    return JsonResponse({"message": "This is a index page"}, status=200)
