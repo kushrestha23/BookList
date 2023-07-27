@@ -1,8 +1,12 @@
+import statistics
 from django.db import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from .models import Book
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
 
 
 # Create your views here.
@@ -29,3 +33,7 @@ def books(request):
 @csrf_exempt
 def index(request):
     return JsonResponse({"message": "This is a index page"}, status=200)
+
+@api_view(['GET','POST'])
+def books(request):
+    return Response('list of the books',status = status.HTTP_200_OK)
