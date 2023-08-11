@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from BookListAPI import views
 
+
 urlpatterns = [
-    path("", views.index, name='index'),
+    path("", views.index, name="index"),
+    path("api/v1/books/", views.BookView.as_view(), name="book-list"),
     path("admin/", admin.site.urls),
-    path('api/v1/',include('BookListAPI.urls')),
-    path('__debug__/',include('debug_toolbar.urls')),
+    path("api/v1/", include("BookListAPI.urls")),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]

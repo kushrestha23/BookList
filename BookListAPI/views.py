@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.views import APIView
+from .serializers import BookSerializer
+from rest_framework import generics
 
 
 # Create your views here.
@@ -35,24 +37,41 @@ def books(request):
 def index(request):
     return JsonResponse({"message": "This is a index page"}, status=200)
 
-@api_view(['GET','POST'])
+
+@api_view(["GET", "POST"])
 def books(request):
-    return Response('list of the books',status = status.HTTP_200_OK)
+    return Response("list of the books", status=status.HTTP_200_OK)
+
 
 class BookList(APIView):
     def get(self, request):
-        author = request.GET.get('author')
-        if(author):
-            return Response({"message":"list of the books" + author},status.HTTP_200_OK)
-        
-        return Response({"message":"list of the books"}, status.HTTP_200_OK)
-    
-    def post(self, request):
-        return Response({"title":request.data.get('title')}, status.HTTP_201_CREATED)
+        author = request.GET.get("author")
+        if author:
+            return Response(
+                {"message": "list of the books" + author}, status.HTTP_200_OK
+            )
 
-class Book(APIView):
+        return Response({"message": "list of the books"}, status.HTTP_200_OK)
+
+    def post(self, request):
+        return Response({"title": request.data.get("title")}, status.HTTP_201_CREATED)
+
+
+class get_Book(APIView):
     def get(self, request, pk):
-        return Response({"message":"single book with id" + str(pk)}, status.HTTP_200_OK)
-    
+        return Response(
+            {"message": "single book with id" + str(pk)}, status.HTTP_200_OK
+        )
+
     def put(self, request, pk):
-        return Response({"title":request.data.get('title')},status.HTTP_200_OK)
+        return Response({"title": request.data.get("title")}, status.HTTP_200_OK)
+
+
+class BookView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class SingleBookView(generics.RetrieveUpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
